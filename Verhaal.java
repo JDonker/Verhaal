@@ -26,15 +26,37 @@ public class Verhaal {
 		boer.alleKoeienMelken();
 		boer.printkoeien();
 		System.out.println(boer.aantalbussen()+ " volle melkbussen!");
+		
+		Boer.melkprijs=2;
+		boer.verkoopbussen();
+		System.out.println(boer.getOmzet()+ " euro omzet!");
+		
+		
+		boer.koeienhouden(50);
+		boer.alleKoeienMelken();
+		boer.printkoeien();
+		System.out.println(boer.aantalbussen()+ " volle melkbussen!");
+		boer.koeienhouden(30);
+		boer.alleKoeienMelken();
+		boer.printkoeien();
+		System.out.println(boer.aantalbussen()+ " volle melkbussen!");
+		
+		Boer.melkprijs=1; /// melkprijs daalt flink
+		boer.verkoopbussen();
+		System.out.println(boer.getOmzet()+ " euro omzet!");
+		
 	}
 }
 
 
 class Boer{
+	public static int melkprijs;
 	private Melkmachine machine;
 	private List<Koe> koeien;
 	private List<Melkbus> vollebussen;
 	private Random random;
+	private int omzet;
+	
 
 	Boer(int aantalkoeien,Melkmachine machine) {
 		random = new Random();
@@ -79,6 +101,18 @@ class Boer{
 		for (Koe koe : this.koeien) {
 			System.out.println("Koe heeft nog " + koe.getMelk() + " liter melk.");
 		}
+	}
+	
+	void verkoopbussen() {
+		for(Melkbus bus : this.vollebussen) {
+			omzet += bus.getCapaciteit()*melkprijs;
+		}
+		this.vollebussen=new ArrayList<Melkbus>();
+		
+	}
+	
+	int getOmzet() {
+		return this.omzet;
 	}
 
 
