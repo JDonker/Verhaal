@@ -26,172 +26,171 @@ public class Verhaal {
 		boer.alleKoeienMelken();
 		boer.printkoeien();
 		System.out.println(boer.aantalbussen()+ " volle melkbussen!");
-		
 	}
 }
-	
-	
-	class Boer{
-		private Melkmachine machine;
-		private List<Koe> koeien;
-		private List<Melkbus> vollebussen;
-		private Random random;
-		
-		Boer(int aantalkoeien,Melkmachine machine) {
-			random = new Random();
-			this.koeien = new ArrayList<Koe>();
-			this.vollebussen = new ArrayList<Melkbus>();
-			for(int i=0;i<aantalkoeien;i++)
-				this.koeien.add(new Koe(random.nextInt(6)+1));
-			this.machine=machine;
-		}
-		
-		
-		void koeienhouden(int uren){
-			for (Koe koe : this.koeien) {
-				koe.produceren(uren);
-			}
-		}
-		
-		void checkBus() {
-			if(machine.isDeBusVol()) {
-				this.vollebussen.add(machine.verwijderMelkbus());
-				this.machine.laadMelkbus(new Melkbus(200)); /// maak op magische wijze een nieuwe melkbus
-			}
-		}
-		
-		void alleKoeienMelken() {
-			for (Koe koe : this.koeien) {
-				this.machine.Melken(koe);
-				checkBus();
-			}
-		}
-		
-		void addKoe(Koe koe) {
-			this.koeien.add(koe);
-		}
-		
-		int aantalbussen() {
-			return this.vollebussen.size();
-			
-		}
-		
-		void printkoeien() {
-			for (Koe koe : this.koeien) {
-				System.out.println("Koe heeft nog " + koe.getMelk() + " liter melk.");
-			}
-		}
-		
-		
+
+
+class Boer{
+	private Melkmachine machine;
+	private List<Koe> koeien;
+	private List<Melkbus> vollebussen;
+	private Random random;
+
+	Boer(int aantalkoeien,Melkmachine machine) {
+		random = new Random();
+		this.koeien = new ArrayList<Koe>();
+		this.vollebussen = new ArrayList<Melkbus>();
+		for(int i=0;i<aantalkoeien;i++)
+			this.koeien.add(new Koe(random.nextInt(6)+1));
+		this.machine=machine;
 	}
-	
-	
-	class Koe{
-		private int melk;
-		private int productieSnelheid;
-		private int capaciteit;
-		
-		Koe(){
-			this.melk=0;
-			this.productieSnelheid=3;
-			this.capaciteit=100;
-		}
-		
-		Koe(int productiesnelheid){
-			this();
-			this.productieSnelheid=productiesnelheid;
-		}
-		
-		void produceren(int uren) {
-			melk+=productieSnelheid*uren;
-			melk = Math.min(melk, capaciteit);
-		}
-		
-		int getMelk() {
-			return this.melk;
-		}
-		
-		boolean melken(int liter) {
-			if (liter<=this.melk) {
-				this.melk-=liter;
-				return true;
-			} 
-			return false;
+
+
+	void koeienhouden(int uren){
+		for (Koe koe : this.koeien) {
+			koe.produceren(uren);
 		}
 	}
-	
-	
-	
-	class Melkbus{
-		private int capaciteit;
-		private int inhoud;
-		
-		Melkbus(int capaciteit){
-			this.capaciteit=capaciteit;
-			this.inhoud=0;
-		}
-		
-		int getInhoud() {
-			return this.inhoud;
-		}
-		
-		int getCapaciteit() {
-			return this.capaciteit;
-		}
-		
-		int getRuimte() {
-			return this.capaciteit-this.inhoud;
-			
-		}
-		
-		void voegtoe(int liters) {
-			this.inhoud+=liters;
-		}
-		
-		boolean vol() {
-			return this.capaciteit==this.inhoud;
-			
+
+	void checkBus() {
+		if(machine.isDeBusVol()) {
+			this.vollebussen.add(machine.verwijderMelkbus());
+			this.machine.laadMelkbus(new Melkbus(200)); /// maak op magische wijze een nieuwe melkbus
 		}
 	}
-	
-	
-	class Melkmachine {
-		private Melkbus bus;
-		
-		void laadMelkbus(Melkbus bus) {
-			this.bus = bus;
+
+	void alleKoeienMelken() {
+		for (Koe koe : this.koeien) {
+			this.machine.Melken(koe);
+			checkBus();
 		}
-		
-		void Melken(Koe koe) {
-			if(this.bus != null) {
-				int liters = Math.min(this.bus.getRuimte(),koe.getMelk());
-				if(koe.melken(liters)) {
-					this.bus.voegtoe(liters);
-				}
-			} else {
-				System.out.println("Geen melkbus geladen");
-				
+	}
+
+	void addKoe(Koe koe) {
+		this.koeien.add(koe);
+	}
+
+	int aantalbussen() {
+		return this.vollebussen.size();
+
+	}
+
+	void printkoeien() {
+		for (Koe koe : this.koeien) {
+			System.out.println("Koe heeft nog " + koe.getMelk() + " liter melk.");
+		}
+	}
+
+
+}
+
+
+class Koe{
+	private int melk;
+	private int productieSnelheid;
+	private int capaciteit;
+
+	Koe(){
+		this.melk=0;
+		this.productieSnelheid=3;
+		this.capaciteit=100;
+	}
+
+	Koe(int productiesnelheid){
+		this();
+		this.productieSnelheid=productiesnelheid;
+	}
+
+	void produceren(int uren) {
+		melk+=productieSnelheid*uren;
+		melk = Math.min(melk, capaciteit);
+	}
+
+	int getMelk() {
+		return this.melk;
+	}
+
+	boolean melken(int liter) {
+		if (liter<=this.melk) {
+			this.melk-=liter;
+			return true;
+		} 
+		return false;
+	}
+}
+
+
+
+class Melkbus{
+	private int capaciteit;
+	private int inhoud;
+
+	Melkbus(int capaciteit){
+		this.capaciteit=capaciteit;
+		this.inhoud=0;
+	}
+
+	int getInhoud() {
+		return this.inhoud;
+	}
+
+	int getCapaciteit() {
+		return this.capaciteit;
+	}
+
+	int getRuimte() {
+		return this.capaciteit-this.inhoud;
+
+	}
+
+	void voegtoe(int liters) {
+		this.inhoud+=liters;
+	}
+
+	boolean vol() {
+		return this.capaciteit==this.inhoud;
+
+	}
+}
+
+
+class Melkmachine {
+	private Melkbus bus;
+
+	void laadMelkbus(Melkbus bus) {
+		this.bus = bus;
+	}
+
+	void Melken(Koe koe) {
+		if(this.bus != null) {
+			int liters = Math.min(this.bus.getRuimte(),koe.getMelk());
+			if(koe.melken(liters)) {
+				this.bus.voegtoe(liters);
 			}
-		}
-		
-		boolean isDeBusVol() {
-			return this.bus.vol();
-		}
-		
-		
-		Melkbus verwijderMelkbus() {
-			Melkbus melkbus = this.bus;
-			this.bus=null;
-			return melkbus;
-			
+		} else {
+			System.out.println("Geen melkbus geladen");
+
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+
+	boolean isDeBusVol() {
+		return this.bus.vol();
+	}
+
+
+	Melkbus verwijderMelkbus() {
+		Melkbus melkbus = this.bus;
+		this.bus=null;
+		return melkbus;
+
+	}
+}
+
+
+
+
+
+
+
+
 
